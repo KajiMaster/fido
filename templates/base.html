@@ -1,0 +1,14 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<body>
+    {% if error %}
+        <div id="error">
+            {{ error }}
+        </div>
+    {% else %}
+        <div id="content">
+            {% block content}{% endblock %}
+        </div>
+    {% endif %}
+</body>
+</html>
