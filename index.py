@@ -18,7 +18,7 @@ def index():
 #the form on the index page hits this url
 @app.route('/fetch', methods=['GET', 'POST'])
 def fetch():
-    if request.method == 'POST':
+    if rq.method == 'POST':
         #error = None
         #url = None
         url = rq.form.get('url')
@@ -36,8 +36,8 @@ def fetch():
         try:
             r = requests.get(url)
         except Exception as e:
-            return render_template('index.html', error='There was a problem with \
-                    your request. Please doublecheck your URL.')
+            return render_template('index.html', 
+            error='There was a problem with your request. Please doublecheck your URL.')
         # requests automatically follows redirects
         # so the final status code should be a 200
         if r.status_code != requests.codes.ok:

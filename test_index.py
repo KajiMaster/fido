@@ -1,6 +1,9 @@
 import os
 
 import pytest
+import requests
+import responses
+from mock import MagicMock, patch, Mock
 
 import index
 
@@ -42,7 +45,14 @@ def test_fetch_non_http():
     response = tc.post('/fetch', data=dict(url='ftp://example.com'))
     assert 'Only HTTP- or HTTPS-based URLs allowed!' in response.data
 
-
+@patch('index.requests.get')
+def test_fetch_404(mock_get):
+    mock_response = Mock()
+    mock_response.status_code.return_value = 404
+    mock_get.return_value = mock_response
+    tc = test_client()
+    r = tc.post('/fetch', data=dict(url='http://blah.com'))
+    assert 'Got an error from the remote server!' in r.data
 
 #def test_fetch_relative_url():
 #    tc = test_client()
