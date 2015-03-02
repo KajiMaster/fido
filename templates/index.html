@@ -5,6 +5,12 @@
     </div>
     <form action="/fetch" method="post" id="urlform">
         <div>
+            {% if form.url.errors %}
+                <ul class="errors">
+                    {% for error in form.url.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}        
+            {% endif %}
             <!-- <label for="url">URL:</label>
                 <input type="text" id="url" name="url"/> -->
             {{ form.url.label }}: {{ form.url }}
@@ -14,16 +20,18 @@
         </div>
     </form>
     {% if tag_dict %}
-        <div id="output">
+        <div class="output" id="output">
             <h2>Tags found, with their counts</h2>
             {% for tag, count in tag_dict|dictsort %}
                 <li>{{ tag }}: {{ count }}</li>
             {% endfor %}
         </div>
-        <pre>
-            <code>
-                {{ source_html }}
-            </code>
-        </pre>
+        <div class="output" id="target_html">
+            <pre>
+                <code>
+                    {{ source_html }}
+                </code>
+            </pre>
+        </div>
     {% endif %}
 {% endblock %}
