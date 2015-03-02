@@ -61,4 +61,18 @@ def test_fetch_404(mock_get):
     r = tc.post('/fetch', data=dict(url='http://example.com'))
     assert 'Got an error from the remote server!' in r.data
 
+def test_fetch_localhost():
+    tc = test_client()
+    response = tc.post('/fetch', data=dict(url='http://127.0.0.1'))
+    assert 'Requests to that IP address are not allowed!' in response.data
 
+@patch('index.requests.get')
+def test_valid_html(mock_get):
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.headers = {'content-type': 'text/html'}
+    mock_response.text = html_data()
+    mock_get.return_value = mock_response
+    tc = test_client()
+    r = tc.post('/fetch', data=dict(url='http://example.com'))
+    assert r.status_code == 200
