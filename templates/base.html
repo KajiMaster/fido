@@ -9,11 +9,12 @@
         <div id="error">
             {{ error }}
         </div>
-    {% else %}
+        {# {% else %} #}
+        {% endif %}
         <div id="content">
             {% block content %}{% endblock %}
         </div>
-    {% endif %}
+        {# {% endif %} #}
     <script type="text/javascript">
         addMarkListeners();
     </script>
