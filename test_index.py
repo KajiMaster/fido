@@ -67,7 +67,7 @@ def test_fetch_localhost():
     assert 'Requests to that IP address are not allowed!' in response.data
 
 @patch('index.requests.get')
-def test_valid_html(mock_get):
+def test_fetch_valid_html(mock_get):
     mock_response = Mock()
     mock_response.status_code = 200
     mock_response.headers = {'content-type': 'text/html'}
@@ -76,3 +76,15 @@ def test_valid_html(mock_get):
     tc = test_client()
     r = tc.post('/fetch', data=dict(url='http://example.com'))
     assert r.status_code == 200
+
+@patch('index.requests.get')
+def test_fetch_json(mock_get):
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.headers = {'content-type': 'text/html'}
+    mock_response.text = json_data()
+    mock_get.return_value = mock_response
+    tc = test_client()
+    r = tc.post('/fetch', data=dict(url='http://json.com'))
+    print r.data
+    assert 'No tags found!' in r.data

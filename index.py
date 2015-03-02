@@ -4,7 +4,7 @@ from urlparse import urlparse
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, redirect
 from flask import request as rq
-from flask_wtf.csrf import CsrfProtect
+#from flask_wtf.csrf import CsrfProtect
 import requests
 
 import forms
@@ -51,11 +51,19 @@ def fetch():
             return render_template('index.html',
                     error='There was a problem with the target HTML!')
         tags = [tag.name for tag in soup.findAll()]
-        tag_dict = dict(Counter(tags))
+        # just in case something got past that's not actually HTML
+        # like, say, JSON
+        if not tags:
+            error = 'No tags found!'
+            source_html = None
+            tag_dict = None
+        else:
+            source_html = soup.prettify()
+            tag_dict = dict(Counter(tags))
         return render_template('index.html', 
                 error=error, 
                 form=form,
-                source_html=soup.prettify(),
+                source_html=source_html,
                 tag_dict=tag_dict)
     return render_template('index.html', form=form, tag_dict=tag_dict)
 
