@@ -28,6 +28,7 @@
                 {% for tag, count in tag_dict|dictsort %}
                 <li class="tag_li"><b><a href="#">{{ tag }}</a></b>: {{ count }}</li>
                 {% endfor %}
+                <button id="unmark" type="submit" onclick="unmark();">Unmark all</button>
             </div>
             <div class="output col span_2_of_3" id="target_html">
                 <h2 id="source_header">Source</h2>
