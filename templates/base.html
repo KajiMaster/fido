@@ -2,6 +2,7 @@
 <html>
     <head>
         <link href="static/base.css" rel="stylesheet" />
+        <script src="static/mark.js"></script>
     </head>
 <body>
     {% if error %}
@@ -13,5 +14,8 @@
             {% block content %}{% endblock %}
         </div>
     {% endif %}
+    <script type="text/javascript">
+        addMarkListeners();
+    </script>
 </body>
 </html>
