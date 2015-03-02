@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+    <div id="call_to_action">
+        <h1>Enter a URL and see its source</h1>
+    </div>
+    <form action="/fetch" method="post" id="urlform">
+        <div>
+            <!-- <label for="url">URL:</label>
+                <input type="text" id="url" name="url"/> -->
+            {{ form.url.label }}: {{ form.url }}
+        </div>
+        <div class="button">
+            <button type="submit">Fetch source!</button>
+        </div>
+    </form>
+    {% if tag_dict %}
+        <div id="output">
+            <h2>Tags found, with their counts</h2>
+            {% for tag, count in tag_dict|dictsort %}
+                <li>{{ tag }}: {{ count }}</li>
+            {% endfor %}
+        </div>
+        <pre>
+            <code>
+                {{ source_html }}
+            </code>
+        </pre>
+    {% endif %}
+{% endblock %}
