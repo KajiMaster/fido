@@ -44,4 +44,7 @@ button {
     width: 90%;
 }
 
-
+.output {
+    width: 75%;
+    margin: 0 auto;
+}
