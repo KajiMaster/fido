@@ -20,9 +20,12 @@ function markTag() {
     // match the tag only if followed by whitespace or a >
     // that way we don't match <b> and <body> with the same regex
     var regexstring = '&lt;' + tag_to_mark + '(?=\\s|&gt)';
-    console.log(regexstring);
     var regexp = new RegExp(regexstring, 'g');
+    var close_regexstring = '&lt;/' + tag_to_mark + '&gt;';
+    var close_regexp = new RegExp(close_regexstring, 'g');
+    //var closeregexstring = '&lt;/' + tag_to_mark + '&gt;';
     var marked = text.replace(regexp, '&lt;<mark>' + tag_to_mark + '</mark>');
+    marked = marked.replace(close_regexp, '&lt;/<mark>' + tag_to_mark + '</mark>&gt;');
     source_div.innerHTML = marked;
 }
     
