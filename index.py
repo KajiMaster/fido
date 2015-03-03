@@ -12,6 +12,12 @@ app = Flask(__name__)
 
 @app.route('/fetch', methods=['GET', 'POST'])
 def fetch():
+    '''
+    A view to fetch a given URL and display its source, along with a
+    summary of the tags found within and their counts.
+
+    On GET, just displays the blank form.
+    '''
     tag_dict = None
     # i would not normally do this, but in this case we're not worried about
     # CSRF issues and i'd rather not add more configuration
@@ -22,7 +28,8 @@ def fetch():
         try:
             r = requests.get(url)
         except Exception as e:
-            form.url.errors.append('There was a problem with your request. Please doublecheck your URL.')
+            form.url.errors.append('There was a problem with your request. ' 
+                'Please doublecheck your URL.')
             return render_template('fetch.html', 
                     form=form,
                     tag_dict=tag_dict)
@@ -35,7 +42,8 @@ def fetch():
         # i'm not overjoyed with this as the only check to make sure the
         # payload is in fact HTML, but i'm not sure what other options there are
         if not r.headers['content-type'].startswith('text/html'):
-            form.url.errors.append('The server returned something other than HTML!')
+            form.url.errors.append('The server returned something other '
+                'than HTML!')
             return render_template('fetch.html', form=form)
         source_html = r.text
         try:
