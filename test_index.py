@@ -76,6 +76,8 @@ def test_fetch_valid_html(mock_get):
     tc = test_client()
     r = tc.post('/fetch', data=dict(url='http://example.com'))
     assert r.status_code == 200
+    assert 'Tags found' in r.data
+    assert 'Source' in r.data
 
 @patch('index.requests.get')
 def test_fetch_json(mock_get):

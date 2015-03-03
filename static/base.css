@@ -107,6 +107,10 @@ li {
     list-style: none;
 }
 
+li.form_error {
+    color: red;
+}
+
 #source_header {
     padding: 0 0 0 35%;
 }

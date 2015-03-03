@@ -24,44 +24,45 @@ def fetch():
     tag_dict = None
     form = forms.URLForm(csrf_enabled=False)
     if form.validate_on_submit():
-        error = None
+        html_errors = None
         url = form.url.data
         try:
             r = requests.get(url)
         except Exception as e:
+            form.url.errors.append('There was a problem with your request. Please doublecheck your URL.')
             return render_template('index.html', 
-                    error='There was a problem with your request. Please doublecheck your URL.',
                     form=form,
                     tag_dict=tag_dict)
         # requests automatically follows redirects
         # so the final status code should be a 200
         if r.status_code != requests.codes.ok:
-            return render_template('index.html', form=form,
-                    error='Got an error from the remote server!')
+            form.url.errors.append('Got an error from the remote server!')
+            return render_template('index.html', form=form)
         # we only try to parse HTML
         # i'm not overjoyed with this as the only check to make sure the
         # payload is in fact HTML, but i'm not sure what other options there are
         if not r.headers['content-type'].startswith('text/html'):
-            return render_template('index.html', form=form,
-                    error='The server returned something other than HTML!')
+            form.url.errors.append('The server returned something other than HTML!')
+            return render_template('index.html', form=form)
         source_html = r.text
         try:
             soup = BeautifulSoup(source_html, 'html.parser')
         except Exception as e:
-            return render_template('index.html',
-                    error='There was a problem with the target HTML!')
+            html_errors = ['There was a problem with the target HTML!']
+            return render_template('index.html', form=form,
+                                    html_errors=html_errors)
         tags = [tag.name for tag in soup.findAll()]
         # just in case something got past that's not actually HTML
         # like, say, JSON
         if not tags:
-            error = 'No tags found!'
+            html_errors = ['No tags found!']
             source_html = None
             tag_dict = None
         else:
             source_html = soup.prettify()
             tag_dict = dict(Counter(tags))
         return render_template('index.html', 
-                error=error, 
+                html_errors=html_errors, 
                 form=form,
                 source_html=source_html,
                 tag_dict=tag_dict)

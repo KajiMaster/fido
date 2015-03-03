@@ -8,8 +8,9 @@
                 {% if form.url.errors %}
                     <ul class="errors">
                         {% for error in form.url.errors %}
-                            <li>{{ error }}</li>
+                            <li class"form_error">{{ error }}</li>
                         {% endfor %}        
+                    </ul>
                 {% endif %}
             <!-- <label for="url">URL:</label>
                 <input type="text" id="url" name="url"/> -->
@@ -22,6 +23,13 @@
         </div>
     </div>
     <div class="section group">
+        {% if html_errors %}
+            <ul class="errors">
+                {% for error in html_errors %}
+                    <li class="html_error">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% if tag_dict %}
             <div class="output col span_1_of_3" id="tags">
                 <h2 id="tags_h2">Tags found</h2>
