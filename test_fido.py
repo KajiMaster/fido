@@ -5,7 +5,7 @@ import requests
 import responses
 from mock import MagicMock, patch, Mock
 
-import index
+import fido
 
 @pytest.fixture(scope='module')
 def json_data():
@@ -27,7 +27,7 @@ def html_data():
 
 @pytest.fixture(scope='module')
 def test_client():
-    tc = index.app.test_client()
+    tc = fido.app.test_client()
     return tc
 
 
@@ -42,7 +42,7 @@ def test_fetch_non_http():
     print response.data
     assert 'Only HTTP- or HTTPS-based URLs allowed!' in response.data
 
-@patch('index.requests.get')
+@patch('fido.requests.get')
 def test_fetch_non_html(mock_get):
     mock_response = Mock()
     mock_response.status_code = 200 
@@ -52,7 +52,7 @@ def test_fetch_non_html(mock_get):
     r = tc.post('/fetch', data=dict(url='http://example.com'))
     assert 'The server returned something other than HTML!' in r.data
 
-@patch('index.requests.get')
+@patch('fido.requests.get')
 def test_fetch_404(mock_get):
     mock_response = Mock()
     mock_response.status_code = 404
@@ -66,7 +66,7 @@ def test_fetch_localhost():
     response = tc.post('/fetch', data=dict(url='http://127.0.0.1'))
     assert 'Requests to that IP address are not allowed!' in response.data
 
-@patch('index.requests.get')
+@patch('fido.requests.get')
 def test_fetch_valid_html(mock_get):
     mock_response = Mock()
     mock_response.status_code = 200
@@ -79,7 +79,7 @@ def test_fetch_valid_html(mock_get):
     assert 'Tags found' in r.data
     assert 'Source' in r.data
 
-@patch('index.requests.get')
+@patch('fido.requests.get')
 def test_fetch_json(mock_get):
     mock_response = Mock()
     mock_response.status_code = 200
