@@ -1,10 +1,3 @@
-function addEvent(element, evnt, funct){
-    if (element.attachEvent)
-        return element.attachEvent('on'+evnt, funct);
-    else
-        return element.addEventListener(evnt, funct, false);
-}
-
 function unmark() {
     var source_div = document.getElementById('source_html');
     var text = source_div.innerHTML;
@@ -42,6 +35,3 @@ function addMarkListeners() {
         as[i].addEventListener("click", markTag, false);
     }
 }
-
-// from http://stackoverflow.com/questions/8644428/how-to-highlight-text-using-javascript
-
